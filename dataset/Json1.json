@@ -1,0 +1,232 @@
+{
+	"name": "Json1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "objectprojection.json",
+				"folderPath": "aHR0cHM6Ly92aWt1cnBhZDAxZGVtby5ibG9iLmNvcmUud2luZG93cy5uZXQvbWFudWFscy9zdXJmYWNlLnBkZg2",
+				"fileSystem": "knowstore"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"metadata_storage_content_type": {
+					"type": "string"
+				},
+				"metadata_storage_size": {
+					"type": "integer"
+				},
+				"metadata_storage_last_modified": {
+					"type": "string"
+				},
+				"metadata_storage_content_md5": {
+					"type": "string"
+				},
+				"metadata_storage_name": {
+					"type": "string"
+				},
+				"metadata_storage_path": {
+					"type": "string"
+				},
+				"metadata_content_type": {
+					"type": "string"
+				},
+				"metadata_language": {
+					"type": "string"
+				},
+				"metadata_author": {
+					"type": "string"
+				},
+				"metadata_title": {
+					"type": "string"
+				},
+				"metadata_creation_date": {
+					"type": "string"
+				},
+				"merged_content": {
+					"type": "string"
+				},
+				"pages": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"Entities": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"Entity": {
+											"type": "string"
+										},
+										"EntitySubType": {
+											"type": "null"
+										},
+										"EntityType": {
+											"type": "string"
+										},
+										"Url": {
+											"type": "null"
+										}
+									}
+								}
+							},
+							"keyPhrases": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								}
+							},
+							"Page": {
+								"type": "string"
+							}
+						}
+					}
+				},
+				"Images": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"Images": {
+								"type": "object",
+								"properties": {
+									"height": {
+										"type": "integer"
+									},
+									"imgdata": {
+										"type": "object",
+										"properties": {
+											"width": {
+												"type": "integer"
+											},
+											"height": {
+												"type": "integer"
+											},
+											"originalWidth": {
+												"type": "integer"
+											},
+											"originalHeight": {
+												"type": "integer"
+											},
+											"rotationFromOriginal": {
+												"type": "integer"
+											},
+											"contentOffset": {
+												"type": "integer"
+											},
+											"pageNumber": {
+												"type": "integer"
+											},
+											"contentType": {
+												"type": "string"
+											}
+										}
+									},
+									"originalHeight": {
+										"type": "integer"
+									},
+									"originalWidth": {
+										"type": "integer"
+									},
+									"tags": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"confidence": {
+													"type": "number"
+												},
+												"hint": {
+													"type": "null"
+												},
+												"name": {
+													"type": "string"
+												}
+											}
+										}
+									},
+									"text": {
+										"type": "string"
+									},
+									"width": {
+										"type": "integer"
+									}
+								}
+							},
+							"layoutText": {
+								"type": "object",
+								"properties": {
+									"language": {
+										"type": "string"
+									},
+									"text": {
+										"type": "string"
+									},
+									"lines": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"boundingBox": {
+													"type": "array",
+													"items": {
+														"type": "object",
+														"properties": {
+															"x": {
+																"type": "integer"
+															},
+															"y": {
+																"type": "integer"
+															}
+														}
+													}
+												},
+												"text": {
+													"type": "string"
+												}
+											}
+										}
+									},
+									"words": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"boundingBox": {
+													"type": "array",
+													"items": {
+														"type": "object",
+														"properties": {
+															"x": {
+																"type": "integer"
+															},
+															"y": {
+																"type": "integer"
+															}
+														}
+													}
+												},
+												"text": {
+													"type": "string"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
