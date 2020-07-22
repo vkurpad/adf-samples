@@ -9,19 +9,27 @@
 						"referenceName": "Json1",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "source2"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "KnowStoreSQL",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
-					"name": "Flatten1"
+					"name": "Flatten2"
 				},
 				{
-					"name": "Select1"
+					"name": "Select2"
 				}
 			],
-			"script": "source(output(\n\t\tmetadata_storage_content_type as string,\n\t\tmetadata_storage_size as string,\n\t\tmetadata_storage_last_modified as string,\n\t\tmetadata_storage_content_md5 as string,\n\t\tmetadata_storage_name as string,\n\t\tmetadata_storage_path as string,\n\t\tmetadata_content_type as string,\n\t\tmetadata_language as string,\n\t\tmetadata_author as string,\n\t\tmetadata_title as string,\n\t\tmetadata_creation_date as string,\n\t\tmerged_content as string,\n\t\tpages as (Entities as (Entity as string, EntitySubType as string, EntityType as string, Url as string)[], keyPhrases as string[], Page as string)[],\n\t\tImages as (Images as (height as string, imgdata as (width as string, height as string, originalWidth as string, originalHeight as string, rotationFromOriginal as string, contentOffset as string, pageNumber as string, contentType as string), originalHeight as string, originalWidth as string, tags as (confidence as double, hint as string, name as string)[], text as string, width as string), layoutText as (language as string, text as string, lines as (boundingBox as (x as string, y as string)[], text as string)[], words as (boundingBox as (x as string, y as string)[], text as string)[]))[]\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 foldDown(unroll(pages.Entities),\n\tmapColumn(\n\t\tmetadata_storage_content_type,\n\t\tmetadata_storage_size,\n\t\tmetadata_storage_last_modified,\n\t\tmetadata_storage_content_md5,\n\t\tmetadata_storage_name,\n\t\tmetadata_storage_path,\n\t\tmetadata_content_type,\n\t\tmetadata_language,\n\t\tmetadata_author,\n\t\tmetadata_title,\n\t\tmetadata_creation_date,\n\t\tmerged_content,\n\t\tpages,\n\t\tImages,\n\t\teach(pages, match(true()))\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: true) ~> Flatten1\nFlatten1 select(mapColumn(\n\t\tmetadata_storage_content_type,\n\t\tmetadata_storage_size,\n\t\tmetadata_storage_last_modified,\n\t\tmetadata_storage_content_md5,\n\t\tmetadata_storage_name,\n\t\tmetadata_storage_path,\n\t\tmetadata_content_type,\n\t\tmetadata_language,\n\t\tmetadata_author,\n\t\tmetadata_title,\n\t\tmetadata_creation_date,\n\t\tmerged_content,\n\t\tpages,\n\t\tImages,\n\t\tEntities,\n\t\tkeyPhrases,\n\t\tPage\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: true) ~> Select1"
+			"script": "source(output(\n\t\tmetadata_storage_content_type as string,\n\t\tmetadata_storage_size as string,\n\t\tmetadata_storage_last_modified as string,\n\t\tmetadata_storage_content_md5 as string,\n\t\tmetadata_storage_name as string,\n\t\tmetadata_storage_path as string,\n\t\tmetadata_content_type as string,\n\t\tmetadata_language as string,\n\t\tmetadata_author as string,\n\t\tmetadata_title as string,\n\t\tmetadata_creation_date as string,\n\t\tmerged_content as string,\n\t\tpages as (Entities as (Entity as string, EntitySubType as string, EntityType as string, Url as string)[], keyPhrases as string[], Page as string)[],\n\t\tImages as (Images as (height as string, imgdata as (width as string, height as string, originalWidth as string, originalHeight as string, rotationFromOriginal as string, contentOffset as string, pageNumber as string, contentType as string), originalHeight as string, originalWidth as string, tags as (confidence as double, hint as string, name as string)[], text as string, width as string), layoutText as (language as string, text as string, lines as (boundingBox as (x as string, y as string)[], text as string)[], words as (boundingBox as (x as string, y as string)[], text as string)[]))[]\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tlimit: 100) ~> source2\nsource2 foldDown(unroll(pages.Entities),\n\tmapColumn(\n\t\tmetadata_storage_content_type,\n\t\tmetadata_storage_size,\n\t\tmetadata_storage_last_modified,\n\t\tmetadata_storage_content_md5,\n\t\tmetadata_storage_name,\n\t\tmetadata_storage_path,\n\t\tmetadata_content_type,\n\t\tmetadata_language,\n\t\tmetadata_author,\n\t\tmetadata_title,\n\t\tmetadata_creation_date,\n\t\tmerged_content,\n\t\tpages,\n\t\tImages,\n\t\teach(pages, match(true()))\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: true) ~> Flatten2\nFlatten2 select(mapColumn(\n\t\tmetadata_storage_content_type,\n\t\tmetadata_storage_size,\n\t\tmetadata_storage_last_modified,\n\t\tmetadata_storage_content_md5,\n\t\tmetadata_storage_name,\n\t\tmetadata_storage_path,\n\t\tmetadata_content_type,\n\t\tmetadata_language,\n\t\tmetadata_author,\n\t\tmetadata_title,\n\t\tmetadata_creation_date,\n\t\tmerged_content,\n\t\tpages,\n\t\tEntities,\n\t\tPage\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select2\nSelect2 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
 		}
 	}
 }
