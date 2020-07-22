@@ -1,0 +1,16 @@
+{
+	"name": "PagesTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "KnowStoreSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "EnrichedPages"
+		}
+	}
+}
