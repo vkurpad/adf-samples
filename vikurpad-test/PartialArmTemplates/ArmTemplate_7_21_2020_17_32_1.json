@@ -1,0 +1,333 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "vikurpad-test"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "Json1",
+								"type": "DatasetReference"
+							},
+							"name": "source2"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "KnowStoreSQL",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "Flatten2"
+						},
+						{
+							"name": "Select2"
+						},
+						{
+							"name": "Select3"
+						}
+					],
+					"script": "source(output(\n\t\tmetadata_storage_content_type as string,\n\t\tmetadata_storage_size as string,\n\t\tmetadata_storage_last_modified as string,\n\t\tmetadata_storage_content_md5 as string,\n\t\tmetadata_storage_name as string,\n\t\tmetadata_storage_path as string,\n\t\tmetadata_content_type as string,\n\t\tmetadata_language as string,\n\t\tmetadata_author as string,\n\t\tmetadata_title as string,\n\t\tmetadata_creation_date as string,\n\t\tmerged_content as string,\n\t\tpages as (Entities as (Entity as string, EntitySubType as string, EntityType as string, Url as string)[], keyPhrases as string[], Page as string)[],\n\t\tImages as (Images as (height as string, imgdata as (width as string, height as string, originalWidth as string, originalHeight as string, rotationFromOriginal as string, contentOffset as string, pageNumber as string, contentType as string), originalHeight as string, originalWidth as string, tags as (confidence as double, hint as string, name as string)[], text as string, width as string), layoutText as (language as string, text as string, lines as (boundingBox as (x as string, y as string)[], text as string)[], words as (boundingBox as (x as string, y as string)[], text as string)[]))[]\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tlimit: 100) ~> source2\nsource2 foldDown(unroll(pages.Entities),\n\tmapColumn(\n\t\tmetadata_storage_content_type,\n\t\tmetadata_storage_size,\n\t\tmetadata_storage_last_modified,\n\t\tmetadata_storage_content_md5,\n\t\tmetadata_storage_name,\n\t\tmetadata_storage_path,\n\t\tmetadata_content_type,\n\t\tmetadata_language,\n\t\tmetadata_author,\n\t\tmetadata_title,\n\t\tmetadata_creation_date,\n\t\tmerged_content,\n\t\tpages,\n\t\tImages,\n\t\teach(pages, match(true()))\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: true) ~> Flatten2\nFlatten2 select(mapColumn(\n\t\tmetadata_storage_content_type,\n\t\tmetadata_storage_size,\n\t\tmetadata_storage_last_modified,\n\t\tmetadata_storage_content_md5,\n\t\tmetadata_storage_name,\n\t\tmetadata_storage_path,\n\t\tmetadata_content_type,\n\t\tmetadata_language,\n\t\tmetadata_author,\n\t\tmetadata_title,\n\t\tmetadata_creation_date,\n\t\tmerged_content,\n\t\tPage\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select2\nFlatten2 select(mapColumn(\n\t\tEntities\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select3\nSelect2 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Json1')]",
+				"[concat(variables('factoryId'), '/datasets/KnowStoreSQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "https://vikurpadadls.dfs.core.windows.net",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "**********"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Json1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "objectprojection.json",
+						"folderPath": "aHR0cHM6Ly92aWt1cnBhZDAxZGVtby5ibG9iLmNvcmUud2luZG93cy5uZXQvbWFudWFscy9zdXJmYWNlLnBkZg2",
+						"fileSystem": "knowstore"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"metadata_storage_content_type": {
+							"type": "string"
+						},
+						"metadata_storage_size": {
+							"type": "integer"
+						},
+						"metadata_storage_last_modified": {
+							"type": "string"
+						},
+						"metadata_storage_content_md5": {
+							"type": "string"
+						},
+						"metadata_storage_name": {
+							"type": "string"
+						},
+						"metadata_storage_path": {
+							"type": "string"
+						},
+						"metadata_content_type": {
+							"type": "string"
+						},
+						"metadata_language": {
+							"type": "string"
+						},
+						"metadata_author": {
+							"type": "string"
+						},
+						"metadata_title": {
+							"type": "string"
+						},
+						"metadata_creation_date": {
+							"type": "string"
+						},
+						"merged_content": {
+							"type": "string"
+						},
+						"pages": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"Entities": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"Entity": {
+													"type": "string"
+												},
+												"EntitySubType": {
+													"type": "null"
+												},
+												"EntityType": {
+													"type": "string"
+												},
+												"Url": {
+													"type": "null"
+												}
+											}
+										}
+									},
+									"keyPhrases": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										}
+									},
+									"Page": {
+										"type": "string"
+									}
+								}
+							}
+						},
+						"Images": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"Images": {
+										"type": "object",
+										"properties": {
+											"height": {
+												"type": "integer"
+											},
+											"imgdata": {
+												"type": "object",
+												"properties": {
+													"width": {
+														"type": "integer"
+													},
+													"height": {
+														"type": "integer"
+													},
+													"originalWidth": {
+														"type": "integer"
+													},
+													"originalHeight": {
+														"type": "integer"
+													},
+													"rotationFromOriginal": {
+														"type": "integer"
+													},
+													"contentOffset": {
+														"type": "integer"
+													},
+													"pageNumber": {
+														"type": "integer"
+													},
+													"contentType": {
+														"type": "string"
+													}
+												}
+											},
+											"originalHeight": {
+												"type": "integer"
+											},
+											"originalWidth": {
+												"type": "integer"
+											},
+											"tags": {
+												"type": "array",
+												"items": {
+													"type": "object",
+													"properties": {
+														"confidence": {
+															"type": "number"
+														},
+														"hint": {
+															"type": "null"
+														},
+														"name": {
+															"type": "string"
+														}
+													}
+												}
+											},
+											"text": {
+												"type": "string"
+											},
+											"width": {
+												"type": "integer"
+											}
+										}
+									},
+									"layoutText": {
+										"type": "object",
+										"properties": {
+											"language": {
+												"type": "string"
+											},
+											"text": {
+												"type": "string"
+											},
+											"lines": {
+												"type": "array",
+												"items": {
+													"type": "object",
+													"properties": {
+														"boundingBox": {
+															"type": "array",
+															"items": {
+																"type": "object",
+																"properties": {
+																	"x": {
+																		"type": "integer"
+																	},
+																	"y": {
+																		"type": "integer"
+																	}
+																}
+															}
+														},
+														"text": {
+															"type": "string"
+														}
+													}
+												}
+											},
+											"words": {
+												"type": "array",
+												"items": {
+													"type": "object",
+													"properties": {
+														"boundingBox": {
+															"type": "array",
+															"items": {
+																"type": "object",
+																"properties": {
+																	"x": {
+																		"type": "integer"
+																	},
+																	"y": {
+																		"type": "integer"
+																	}
+																}
+															}
+														},
+														"text": {
+															"type": "string"
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/KnowStoreSQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "KnowStoreSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Documents"
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
