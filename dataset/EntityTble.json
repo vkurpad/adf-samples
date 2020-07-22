@@ -1,0 +1,33 @@
+{
+	"name": "EntityTble",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "KnowStoreSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Entity",
+				"type": "nvarchar"
+			},
+			{
+				"name": "EntitySubType",
+				"type": "nvarchar"
+			},
+			{
+				"name": "EntityType",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Url",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Entities"
+		}
+	}
+}
