@@ -78,7 +78,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "DocumentKeyPhrases",
+						"referenceName": "DocKeyPhrase",
 						"type": "DatasetReference"
 					},
 					"name": "DocumentKeyPhraseRef2"
