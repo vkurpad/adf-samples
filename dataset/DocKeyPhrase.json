@@ -1,0 +1,16 @@
+{
+	"name": "DocKeyPhrase",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "KnowStoreSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "DocKeyPhraseRef"
+		}
+	}
+}
