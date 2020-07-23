@@ -10,7 +10,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "EnrichedDocuments"
+			"table": "Documents"
 		}
 	}
 }
