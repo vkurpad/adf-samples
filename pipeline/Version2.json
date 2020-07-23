@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "KnowledgeStore_copy1",
+				"name": "KnowledgeStore",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -24,7 +24,7 @@
 							"referenceName": "AzureDataLakeStorage1",
 							"type": "LinkedServiceReference"
 						},
-						"folderPath": "knowstore/aHR0cHM6Ly92aWt1cnBhZDAxZGVtby5ibG9iLmNvcmUud2luZG93cy5uZXQvbWFudWFscy9zdXJmYWNlX3Byby5wZGY1"
+						"folderPath": "knowstore/aHR0cHM6Ly92aWt1cnBhZDAxZGVtby5ibG9iLmNvcmUud2luZG93cy5uZXQvbWFudWFscy9zdXJmYWNlXzNfcHJvLnBkZg2"
 					},
 					"compute": {
 						"coreCount": 8,
