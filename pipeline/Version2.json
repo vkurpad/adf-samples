@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "KnowledgeStore_copy1",
+						"referenceName": "KnowledgeStore",
 						"type": "DataFlowReference"
 					},
 					"staging": {
