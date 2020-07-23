@@ -19,6 +19,12 @@
 						"referenceName": "KnowledgeStore",
 						"type": "DataFlowReference"
 					},
+					"staging": {
+						"linkedService": {
+							"referenceName": "AzureDataLakeStorage1",
+							"type": "LinkedServiceReference"
+						}
+					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
