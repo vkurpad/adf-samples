@@ -23,7 +23,8 @@
 						"linkedService": {
 							"referenceName": "AzureDataLakeStorage1",
 							"type": "LinkedServiceReference"
-						}
+						},
+						"folderPath": "knowstore/aHR0cHM6Ly92aWt1cnBhZDAxZGVtby5ibG9iLmNvcmUud2luZG93cy5uZXQvbWFudWFscy9zdXJmYWNlXzNfcHJvLnBkZg2"
 					},
 					"compute": {
 						"coreCount": 8,
