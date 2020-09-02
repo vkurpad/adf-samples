@@ -1,0 +1,86 @@
+{
+	"name": "Json2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "KSBlob",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "crossobject"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"OcrLayoutText": {
+					"type": "object",
+					"properties": {
+						"language": {
+							"type": "string"
+						},
+						"text": {
+							"type": "string"
+						},
+						"lines": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"boundingBox": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"x": {
+													"type": "integer"
+												},
+												"y": {
+													"type": "integer"
+												}
+											}
+										}
+									},
+									"text": {
+										"type": "string"
+									}
+								}
+							}
+						},
+						"words": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"boundingBox": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"x": {
+													"type": "integer"
+												},
+												"y": {
+													"type": "integer"
+												}
+											}
+										}
+									},
+									"text": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				},
+				"Id": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}
