@@ -10,6 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "cross1_layoutText_0.json",
+				"folderPath": "aHR0cHM6Ly92aWt1cnBhZDAxZGVtby5ibG9iLmNvcmUud2luZG93cy5uZXQvcHJvamVjdGlvbnN0ZXN0LWRzL0JsdWVUYWxvbi1PdmVydmlldy1HZW5lcmFsLUZJTkFMLVNlcC0yMDE4LTEucGRm0",
 				"container": "crossobject"
 			}
 		},
